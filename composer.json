@@ -1,0 +1,54 @@
+{
+    "name": "easiviotech/fabriq-skeleton",
+    "description": "Fabriq starter project — a ready-to-use scaffold for building Swoole-powered SaaS applications with multi-tenancy, realtime WebSockets, background jobs, and per-tenant frontend serving.",
+    "type": "project",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=8.2",
+        "ext-swoole": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "fabriq/kernel": "^1.2",
+        "fabriq/storage": "^1.2",
+        "fabriq/http": "^1.2",
+        "fabriq/tenancy": "^1.2",
+        "fabriq/realtime": "^1.2",
+        "fabriq/queue": "^1.2",
+        "fabriq/events": "^1.2",
+        "fabriq/security": "^1.2",
+        "fabriq/observability": "^1.2",
+        "fabriq/orm": "^1.2"
+    },
+    "suggest": {
+        "fabriq/streaming": "Live streaming add-on (WebRTC, HLS transcoding, chat moderation)",
+        "fabriq/gaming": "Game server add-on (tick loop, matchmaking, UDP protocol, state sync)"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-create-project-cmd": [
+            "@php -r \"echo '\\n\\033[32m✓ Fabriq skeleton installed.\\n  Next: docker compose -f infra/docker-compose.yml up -d --build\\n\\033[0m';\""
+        ],
+        "test": "phpunit --no-coverage",
+        "serve": "php bin/fabriq serve",
+        "processor": "php bin/fabriq processor",
+        "scheduler": "php bin/fabriq scheduler"
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {}
+    }
+}

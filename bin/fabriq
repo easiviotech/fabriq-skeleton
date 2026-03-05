@@ -1,0 +1,58 @@
+<?php
+
+declare(strict_types=1);
+
+/**
+ * Fabriq CLI Entry Point
+ *
+ * Usage:
+ *   php bin/fabriq <command> [arguments] [options]
+ *   php bin/fabriq help
+ */
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Fabriq\Kernel\Application;
+use Fabriq\Kernel\Console\Kernel;
+use Fabriq\Kernel\Console\CommandRegistry;
+use Fabriq\Kernel\Console\Commands\ServeCommand;
+use Fabriq\Kernel\Console\Commands\ProcessorCommand;
+use Fabriq\Kernel\Console\Commands\SchedulerCommand;
+use Fabriq\Kernel\Console\Commands\FrontendBuildCommand;
+use Fabriq\Kernel\Console\Commands\FrontendStatusCommand;
+use Fabriq\Kernel\Console\Commands\MakeControllerCommand;
+use Fabriq\Kernel\Console\Commands\MakeModelCommand;
+use Fabriq\Kernel\Console\Commands\MakeProviderCommand;
+use Fabriq\Kernel\Console\Commands\MakeMiddlewareCommand;
+use Fabriq\Kernel\Console\Commands\MakeMigrationCommand;
+use Fabriq\Kernel\Console\Commands\MigrateCommand;
+use Fabriq\Kernel\Console\Commands\MigrateRollbackCommand;
+
+$commandName = $argv[1] ?? 'help';
+$needsApp = in_array($commandName, ['serve'], true);
+
+$app = null;
+if ($needsApp) {
+    /** @var Application $app */
+    $app = require __DIR__ . '/../bootstrap/app.php';
+}
+
+$registry = new CommandRegistry();
+
+$registry->register(new ServeCommand());
+$registry->register(new ProcessorCommand());
+$registry->register(new SchedulerCommand());
+$registry->register(new FrontendBuildCommand());
+$registry->register(new FrontendStatusCommand());
+$registry->register(new MakeControllerCommand());
+$registry->register(new MakeModelCommand());
+$registry->register(new MakeProviderCommand());
+$registry->register(new MakeMiddlewareCommand());
+$registry->register(new MakeMigrationCommand());
+$registry->register(new MigrateCommand());
+$registry->register(new MigrateRollbackCommand());
+
+$kernel = new Kernel($registry, $app);
+$exitCode = $kernel->run($argv);
+
+exit($exitCode);
